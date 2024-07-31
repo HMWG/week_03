@@ -9,7 +9,7 @@ public interface OrderRepository {
 
     public int delete(int order_id);
 
-    public int update(int order_id,int user_id, String order_detail, String order_status);
+    public int update(int order_id,int user_id, String order_detail, String order_status, int total_price);
 
     public Order findByOrderId(int order_id);
 

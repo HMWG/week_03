@@ -234,7 +234,7 @@ public class ProductRepositoryImpl implements ProductRepository {
 
   private Connection connectDb() {
     try {
-      return DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/shop", "mysqluser", "mysqlpw");
+      return DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/" + System.getenv("DB_SCHEMA"), System.getenv("DB_USER"), System.getenv("DB_PASSWORD"));
     } catch (SQLException e) {
       throw new RuntimeException(e);
     }

@@ -22,7 +22,7 @@ public class UserRepositoryImpl implements UserRepository {
     public void save(User user) {
         SQL = "insert into users(name, email, password, phone_num) values (?, ?, ?, ?)";
         try {
-            conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+            conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/" + System.getenv("DB_SCHEMA"), System.getenv("DB_USER"), System.getenv("DB_PASSWORD"));;
             ps = conn.prepareStatement(SQL);
             ps.setString(1, user.getName());
             ps.setString(2, user.getEmail());
@@ -41,7 +41,7 @@ public class UserRepositoryImpl implements UserRepository {
     public List<User> findAll() {
         SQL = "select * from users";
         try {
-            conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+            conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/" + System.getenv("DB_SCHEMA"), System.getenv("DB_USER"), System.getenv("DB_PASSWORD"));
             ps = conn.prepareStatement(SQL);
             rs = ps.executeQuery();
             List<User> users = new ArrayList<>();
@@ -60,7 +60,7 @@ public class UserRepositoryImpl implements UserRepository {
     public List<User> findByEmail(String email) {
         SQL = "select * from users where email = ?";
         try {
-            conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+            conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/" + System.getenv("DB_SCHEMA"), System.getenv("DB_USER"), System.getenv("DB_PASSWORD"));
             ps = conn.prepareStatement(SQL);
             ps.setString(1, email);
             rs = ps.executeQuery();
@@ -80,7 +80,7 @@ public class UserRepositoryImpl implements UserRepository {
     public List<User> findByName(String name) {
         SQL = "select * from users where name = ?";
         try {
-            conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+            conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/" + System.getenv("DB_SCHEMA"), System.getenv("DB_USER"), System.getenv("DB_PASSWORD"));
             ps = conn.prepareStatement(SQL);
             ps.setString(1, name);
             rs = ps.executeQuery();
@@ -100,7 +100,7 @@ public class UserRepositoryImpl implements UserRepository {
     public void update(User user) {
         SQL = "update set name=?, email=?, phone_num=? where user_id=?";
         try {
-            conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+            conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/" + System.getenv("DB_SCHEMA"), System.getenv("DB_USER"), System.getenv("DB_PASSWORD"));
             ps = conn.prepareStatement(SQL);
             ps.setString(1, user.getName());
             ps.setString(2, user.getEmail());
@@ -119,7 +119,7 @@ public class UserRepositoryImpl implements UserRepository {
     public void deleteById(Long id) {
         SQL = "delete from users where user_id=?";
         try {
-            conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+            conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/" + System.getenv("DB_SCHEMA"), System.getenv("DB_USER"), System.getenv("DB_PASSWORD"));
             ps = conn.prepareStatement(SQL);
             ps.setLong(1, id);
             int res = ps.executeUpdate();

@@ -164,7 +164,7 @@ public class OrderItemsRepositoryImpl implements OrderItemsRepository {
     private Connection getConnection() throws SQLException {
         Connection conn = null;
         String dbPassword = System.getenv("DB_PASSWORD");
-        conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/workshop", "root", dbPassword);
+        conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/" + System.getenv("DB_SCHEMA"), System.getenv("DB_USER"), System.getenv("DB_PASSWORD"));
 //            conn = DriverManager.getConnection("jdbc:mysql://59.27.84.200:3306/workshop", "grepp", "grepp");
         return conn;
     }

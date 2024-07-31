@@ -20,7 +20,11 @@ public class Main {
 
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-
+    /**
+     * 환경 변수에 아래 값 넣기
+     * DB_PASSWORD=1234;DB_SCHEMA=shop;DB_USER=root
+     * 수정도 가능
+     */
     public static void main(String[] args) {
 
         while (true) {
@@ -28,7 +32,7 @@ public class Main {
             System.out.println("1. 상품");
             System.out.println("2. 주문");
             System.out.println("3. 회원");
-            System.out.println("3. 종료");
+            System.out.println("4. 종료");
 
             try {
                 int menu = Integer.parseInt(br.readLine());
@@ -135,14 +139,19 @@ public class Main {
                             Long.parseLong(orderProductId));
                         orderItemsRepository.save(orderItem);
                     }
+                    orderService.update(savedId, userId, orderDetail, "ORDERED", orderService.getTotalPriceByOrderId(savedId));
                     break;
                 case 2:
                     System.out.println("주문 조회 메뉴입니다. 주문 ID를 입력해주세요");
                     int orderId = Integer.parseInt(br.readLine());
-                    orderService.findByOrderId(orderId);
+                    System.out.println(orderService.findByOrderId(orderId));
                     break;
                 case 3:
-                    System.out.println("수정할 주문의 ID와 주문 상품 ID, 주문 수량, 주문자 ID를 입력해주세요.");
+                    System.out.println("수정할 주문의 ID와 주문자 ID, 주문 요청사항을 입력해주세요.");
+                    orderId = Integer.parseInt(br.readLine());
+                    userId = Integer.parseInt(br.readLine());
+                    orderDetail = br.readLine();
+                    orderService.update(orderId, userId, orderDetail, "ORDERED", orderService.getTotalPriceByOrderId(orderId));
                     break;
                 case 4:
                     System.out.println("삭제할 주문의 ID를 입력해주세요.");
