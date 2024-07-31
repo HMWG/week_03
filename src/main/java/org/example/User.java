@@ -26,6 +26,10 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
     public User() {
 
     }

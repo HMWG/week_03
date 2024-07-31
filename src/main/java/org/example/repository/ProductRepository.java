@@ -17,4 +17,6 @@ public interface ProductRepository {
   List<Product> findByName(String productName);
 
   List<Product> findAll();
+
+  Product findById(Long productId);
 }

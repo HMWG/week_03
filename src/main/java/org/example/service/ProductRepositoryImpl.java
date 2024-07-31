@@ -197,6 +197,41 @@ public class ProductRepositoryImpl implements ProductRepository {
     return products;
   }
 
+  @Override
+  public Product findById(Long productId) {
+    conn = connectDb();
+    query = "SELECT * FROM products WHERE product_id = ?";
+
+    Product product = null;
+
+    try {
+      psmt = conn.prepareStatement(query);
+      psmt.setLong(1, productId);
+      ResultSet rs = psmt.executeQuery();
+
+      if (rs.next()) {
+        product = Product.of(
+            rs.getLong("product_id"),
+            rs.getString("name"),
+            rs.getBigDecimal("price"),
+            rs.getInt("quantity"),
+            (LocalDateTime) rs.getObject("created_at"));
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    } finally {
+      try {
+        if (conn != null || psmt != null) {
+          psmt.close();
+          conn.close();
+        }
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    }
+    return product;
+  }
+
   private Connection connectDb() {
     try {
       return DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/shop", "mysqluser", "mysqlpw");
