@@ -14,12 +14,6 @@ import java.util.List;
 
 public class OrderService implements OrderRepository {
 
-    final String url = "jdbc:mysql://127.0.0.1:3306/shop";
-    final String user = "root";
-    final String password = "1234";
-
-
-
     public OrderService() {
     }
 
@@ -33,7 +27,7 @@ public class OrderService implements OrderRepository {
         int order_id = 0;
 
         try {
-            conn = DriverManager.getConnection(url, user, password);
+            conn = DBUtil.getConnection();
             SQL = "insert into orders(order_detail, user_id, total_price, order_status) values(?,?,?,?)";
             pstmt = conn.prepareStatement(SQL);
             pstmt.setString(1, order_detail);
@@ -44,39 +38,16 @@ public class OrderService implements OrderRepository {
             SQL2 = "select order_id from orders order by order_id desc limit 1";
             pstmt = conn.prepareStatement(SQL2);
             rs = pstmt.executeQuery();
-
             if (rs.next()) {
                 order_id = rs.getInt("order_id");
             }
-
             return order_id;
         } catch (SQLException e) {
             System.out.println(1);
             e.printStackTrace();
             throw new RuntimeException(e);
         }finally {
-            // 6. 사용 완료한 리소스 반납 ( 생성한 순서의 역순으로 )
-            if(rs!=null){
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if(pstmt!=null){
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if(conn!=null){
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-            }
+            DBUtil.close(rs, pstmt, conn);
         }
     }
 
@@ -87,7 +58,7 @@ public class OrderService implements OrderRepository {
         String SQL;
 
         try {
-            conn = DriverManager.getConnection(url, user, password);
+            conn = DBUtil.getConnection();
             SQL = "DELETE FROM orders where order_id = ?";
             pstmt = conn.prepareStatement(SQL);
             pstmt.setInt(1, order_id);
@@ -97,21 +68,7 @@ public class OrderService implements OrderRepository {
             e.printStackTrace();
             throw new RuntimeException(e);
         }finally {
-            // 6. 사용 완료한 리소스 반납 ( 생성한 순서의 역순으로 )
-            if(pstmt!=null){
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if(conn!=null){
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-            }
+            DBUtil.close(pstmt, conn);
         }
     }
 
@@ -122,7 +79,7 @@ public class OrderService implements OrderRepository {
         String SQL;
 
         try {
-            conn = DriverManager.getConnection(url, user, password);
+            conn = DBUtil.getConnection();
             SQL = "update orders set user_id = ?, order_detail = ?, order_status = ?, total_price = ? Where order_id = ?";
             pstmt = conn.prepareStatement(SQL);
             pstmt.setInt(1, user_id);
@@ -136,21 +93,7 @@ public class OrderService implements OrderRepository {
             e.printStackTrace();
             throw new RuntimeException(e);
         }finally {
-            // 6. 사용 완료한 리소스 반납 ( 생성한 순서의 역순으로 )
-            if(pstmt!=null){
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if(conn!=null){
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-            }
+            DBUtil.close(pstmt, conn);
         }
     }
 
@@ -160,11 +103,10 @@ public class OrderService implements OrderRepository {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         String SQL;
-
         Order order = null;
 
         try {
-            conn = DriverManager.getConnection(url, user, password);
+            conn = DBUtil.getConnection();
             SQL = "select * from orders where order_id = ?";
             pstmt = conn.prepareStatement(SQL);
             pstmt.setInt(1, order_id);
@@ -177,28 +119,7 @@ public class OrderService implements OrderRepository {
             e.printStackTrace();
             throw new RuntimeException(e);
         }finally {
-            // 6. 사용 완료한 리소스 반납 ( 생성한 순서의 역순으로 )
-            if(rs!=null){
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if(pstmt!=null){
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if(conn!=null){
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-            }
+            DBUtil.close(rs, pstmt, conn);
         }
     }
 
@@ -210,7 +131,7 @@ public class OrderService implements OrderRepository {
         String SQL;
         List<Order> orders = new ArrayList<>();
         try {
-            conn = DriverManager.getConnection(url, user, password);
+            conn = DBUtil.getConnection();
             SQL = "select * from orders";
             pstmt = conn.prepareStatement(SQL);
             rs = pstmt.executeQuery();
@@ -222,28 +143,7 @@ public class OrderService implements OrderRepository {
             e.printStackTrace();
             throw new RuntimeException(e);
         }finally {
-            // 6. 사용 완료한 리소스 반납 ( 생성한 순서의 역순으로 )
-            if(rs!=null){
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if(pstmt!=null){
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if(conn!=null){
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-            }
+            DBUtil.close(rs, pstmt, conn);
         }
     }
 
@@ -255,7 +155,7 @@ public class OrderService implements OrderRepository {
         int total_price = 0;
         try {
             //conn = DriverManager.getConnection(url, user, password);
-            conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/" + System.getenv("DB_SCHEMA"), System.getenv("DB_USER"), System.getenv("DB_PASSWORD"));
+            conn = DBUtil.getConnection();
             String SQL = "select sum(price) as total_price from (products p join order_items i on p.product_id = i.product_id) join orders o on i.order_id = o.order_id  group by o.order_id having o.order_id = ?";
             pstmt = conn.prepareStatement(SQL);
             pstmt.setInt(1, order_id);
@@ -268,28 +168,7 @@ public class OrderService implements OrderRepository {
             e.printStackTrace();
             throw new RuntimeException(e);
         }finally {
-            // 6. 사용 완료한 리소스 반납 ( 생성한 순서의 역순으로 )
-            if(rs!=null){
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if(pstmt!=null){
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if(conn!=null){
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-            }
+            DBUtil.close(rs, pstmt, conn);
         }
     }
 }
