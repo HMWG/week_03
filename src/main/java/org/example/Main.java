@@ -7,9 +7,9 @@ import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.util.List;
 import org.example.domain.OrderItem;
+import org.example.domain.User;
 import org.example.jdbcTest.Product;
 import org.example.repository.OrderItemsRepository;
-import org.example.repository.OrderRepository;
 import org.example.repository.ProductRepository;
 import org.example.service.OrderItemsRepositoryImpl;
 import org.example.service.OrderService;
@@ -97,9 +97,9 @@ public class Main {
                         .forEach(System.out::println);
                     break;
                 case 3:
-                    System.out.println("수정할 회원의 이름, 이메일, 전화번호를 입력해주세요.");
-                    String userName = br.readLine();
+                    System.out.println("수정할 회원의 이메일과 이름, 비밀번호, 전화번호를 입력해주세요.");
                     String userEmail = br.readLine();
+                    String userName = br.readLine();
                     String userPassword = br.readLine();
                     String userPhoneNumber = br.readLine();
                     List<User> users = userRepository.findByEmail(userEmail);

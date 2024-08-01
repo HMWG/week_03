@@ -1,10 +1,9 @@
 package org.example.service;
 
-import org.example.User;
+import org.example.domain.User;
 import org.example.repository.UserRepository;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;

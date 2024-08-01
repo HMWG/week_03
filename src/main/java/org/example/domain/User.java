@@ -1,4 +1,4 @@
-package org.example;
+package org.example.domain;
 
 import java.time.LocalDateTime;
 
@@ -9,6 +9,18 @@ public class User {
     private String password;
     private String phoneNumber;
     private LocalDateTime createdAt;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", createdAt=" + createdAt +
+                '}';
+    }
 
     public User(Long userId, String name, String email, String password, String phoneNumber, LocalDateTime createdAt) {
         this.userId = userId;
