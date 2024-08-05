@@ -60,4 +60,17 @@ public class User {
     public boolean getIsAdmin() {
         return isAdmin;
     }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "회원 정보{" +
+                "이름='" + name + '\'' +
+                ", 이메일='" + email + '\'' +
+                ", 전화번호='" + phoneNumber + '\'' +
+                '}';
+    }
 }

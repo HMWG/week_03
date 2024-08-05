@@ -1,5 +1,6 @@
 package org.example.domain.user.repository;
 
+import org.example.domain.delivery.DeliveryAddress;
 import org.example.domain.user.User;
 import org.example.domain.user.exception.EmailNameDuplicationException;
 import org.example.domain.user.service.UserRepository;
@@ -124,14 +125,15 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public void update(User user) {
-        SQL = "update users set name=?, email=?, phone_num=? where user_id=?";
+        SQL = "update users set name=?, password=?, email=?, phone_num=? where user_id=?";
         try {
             conn = DBUtil.getConnection();
             ps = conn.prepareStatement(SQL);
             ps.setString(1, user.getName());
-            ps.setString(2, user.getEmail());
-            ps.setString(3, user.getPhoneNumber());
-            ps.setLong(4, user.getUserId());
+            ps.setString(2, user.getPassword());
+            ps.setString(3, user.getEmail());
+            ps.setString(4, user.getPhoneNumber());
+            ps.setLong(5, user.getUserId());
             int res = ps.executeUpdate();
             System.out.println(res + " 회원정보 수정 완료");
         } catch (SQLException e) {
