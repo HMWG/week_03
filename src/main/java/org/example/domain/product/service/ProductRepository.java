@@ -19,4 +19,6 @@ public interface ProductRepository {
   List<Product> findAll();
 
   Product findById(Long productId);
+
+  void decreaseQuantity(Product product, Integer quantity);
 }

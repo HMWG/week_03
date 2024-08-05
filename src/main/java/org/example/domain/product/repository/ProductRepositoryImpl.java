@@ -232,6 +232,30 @@ public class ProductRepositoryImpl implements ProductRepository {
     return product;
   }
 
+  @Override
+  public void decreaseQuantity(Long productId, Integer quantity) {
+    conn = connectDb();
+    query = "UPDATE products SET quantity = quantity - ? WHERE product_id = ?";
+
+    try {
+      psmt = conn.prepareStatement(query);
+      psmt.setInt(1, quantity);
+      psmt.setLong(2, productId);
+      psmt.executeUpdate();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    } finally {
+      try {
+        if (conn != null || psmt != null) {
+          psmt.close();
+          conn.close();
+        }
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    }
+  }
+
   private Connection connectDb() {
     try {
       return DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/shop", "mysqluser", "mysqlpw");
