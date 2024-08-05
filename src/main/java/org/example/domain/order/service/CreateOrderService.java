@@ -21,7 +21,7 @@ public class CreateOrderService {
     private final ProductRepository productRepository = new ProductRepositoryImpl();
 
 
-    OrderEntity createOrder(User user, long productId, int quantity, String orderDetails) {
+    public OrderEntity createOrder(User user, long productId, int quantity, String orderDetails) {
         Product orderProduct = productRepository.findById(productId);
         OrderEntity orderEntity = OrderEntity.create(user.getUserId(), orderDetails,
                 calculateTotalPrice(orderProduct, quantity));
@@ -30,7 +30,7 @@ public class CreateOrderService {
         return orderEntity;
     }
 
-    void createOrder(User user, Basket basket, String orderDetails) {
+    public void createOrder(User user, Basket basket, String orderDetails) {
         OrderEntity orderEntity = OrderEntity.create(user.getUserId(), orderDetails, basket.totalPrice());
         long orderId = orderRepository.save(orderEntity);
         System.out.println("주문이 생성되었습니다 - orderId : " + orderId);
