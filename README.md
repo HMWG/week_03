@@ -65,5 +65,4 @@
 ---
 
 # 💻 실행 화면
-
-[캡처화면](https://rounded-palm-33d.notion.site/9d6ddb845f7b4f0b93df949c98b9d577?pvs=4)
+[![notion-logo-4CE8FBF5C5-seeklogo com](https://github.com/user-attachments/assets/468aea4f-186f-42b3-beff-bf9a55265f5a)](https://rounded-palm-33d.notion.site/9d6ddb845f7b4f0b93df949c98b9d577?pvs=4)
