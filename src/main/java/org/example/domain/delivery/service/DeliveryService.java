@@ -1,5 +1,6 @@
 package org.example.domain.delivery.service;
 
+import java.util.List;
 import org.example.domain.delivery.Delivery;
 import org.example.domain.delivery.DeliveryAddress;
 
@@ -18,5 +19,9 @@ public class DeliveryService {
         DeliveryAddress deliveryAddress = deliveryAddressRepository.findById(delivery.getDelivery_address_id());
 
         return deliveryAddress.getAddress();
+    }
+
+    public List<DeliveryAddress> findByUserId(Long userId) {
+        return deliveryAddressRepository.findByUserId(userId);
     }
 }

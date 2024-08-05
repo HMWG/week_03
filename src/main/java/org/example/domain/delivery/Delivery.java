@@ -5,10 +5,19 @@ public class Delivery {
     long delivery_address_id;
     long order_id;
 
+    private Delivery(long delivery_address_id, long order_id) {
+        this.delivery_address_id = delivery_address_id;
+        this.order_id = order_id;
+    }
+
     public Delivery(long delivery_id, long delivery_address_id, long order_id) {
         this.delivery_id = delivery_id;
         this.delivery_address_id = delivery_address_id;
         this.order_id = order_id;
+    }
+
+    public static Delivery create(long delivery_address_id, long order_id) {
+        return new Delivery(delivery_address_id, order_id);
     }
 
     public long getDelivery_id() {
