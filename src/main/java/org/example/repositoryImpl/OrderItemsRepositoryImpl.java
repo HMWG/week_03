@@ -1,4 +1,4 @@
-package org.example.service;
+package org.example.repositoryImpl;
 
 import org.example.domain.OrderItem;
 import org.example.repository.OrderItemsRepository;

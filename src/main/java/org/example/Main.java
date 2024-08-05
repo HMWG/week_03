@@ -11,10 +11,10 @@
 //import org.example.repository.OrderItemsRepository;
 //import org.example.repository.OrderRepository;
 //import org.example.repository.ProductRepository;
-//import org.example.service.OrderItemsRepositoryImpl;
+//import org.example.repositoryImpl.OrderItemsRepositoryImpl;
 //import org.example.service.OrderService;
-//import org.example.service.ProductRepositoryImpl;
-//import org.example.service.UserRepositoryImpl;
+//import org.example.repositoryImpl.ProductRepositoryImpl;
+//import org.example.repositoryImpl.UserRepositoryImpl;
 //
 //public class Main {
 //
