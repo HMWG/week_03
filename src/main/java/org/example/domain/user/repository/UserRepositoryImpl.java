@@ -1,6 +1,7 @@
 package org.example.domain.user.repository;
 
 import org.example.domain.user.User;
+import org.example.domain.user.exception.EmailNameDuplicationException;
 import org.example.domain.user.service.UserRepository;
 import org.example.util.DBUtil;
 
@@ -18,7 +19,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public void save(User user) {
-        SQL = "insert into users(name, email, password, phone_num) values (?, ?, ?, ?)";
+        SQL = "insert into users(name, email, password, phone_num, is_admin) values (?, ?, ?, ?, ?)";
         try {
             conn = DBUtil.getConnection();
             ps = conn.prepareStatement(SQL);
@@ -26,8 +27,11 @@ public class UserRepositoryImpl implements UserRepository {
             ps.setString(2, user.getEmail());
             ps.setString(3, user.getPassword());
             ps.setString(4, user.getPhoneNumber());
+            ps.setBoolean(5, user.getIsAdmin());
             int res = ps.executeUpdate();
             System.out.println(res + " 회원 추가 완료");
+        } catch (SQLIntegrityConstraintViolationException e) {
+            throw new EmailNameDuplicationException();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
@@ -159,8 +163,9 @@ public class UserRepositoryImpl implements UserRepository {
         String email = rs.getString("email");
         String password = rs.getString("password");
         String phoneNum = rs.getString("phone_num");
+        boolean isAdmin = rs.getBoolean("is_admin");
         LocalDateTime createdAt = rs.getObject("created_at", LocalDateTime.class);
 
-        return new User(id, name, email, password, phoneNum, createdAt);
+        return new User(id, name, email, password, phoneNum, isAdmin, createdAt);
     }
 }
