@@ -25,8 +25,10 @@ public class CreateOrderService {
         Product orderProduct = productRepository.findById(productId);
         OrderEntity orderEntity = OrderEntity.create(user.getUserId(), orderDetails,
                 calculateTotalPrice(orderProduct, quantity));
-        orderItemsRepository.save(OrderItemEntity.create(orderEntity.getOrderId(), BasketItem.of(orderProduct, quantity)));
+        long orderId = orderRepository.save(orderEntity);
+        orderItemsRepository.save(OrderItemEntity.create(orderId, BasketItem.of(orderProduct, quantity)));
         productRepository.decreaseQuantity(orderProduct, quantity);
+        orderEntity.setOrderId(orderId);
         return orderEntity;
     }
 
