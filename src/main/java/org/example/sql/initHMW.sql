@@ -5,7 +5,7 @@ drop table if exists order_items;
 drop table if exists basket_items;
 drop table if exists deliver;
 drop table if exists delivery_address;
-drop table if exists orders;
+drop table if exists orderEntities;
 drop table if exists users;
 drop table if exists products;
 
@@ -23,7 +23,7 @@ ALTER TABLE users
 ADD CONSTRAINT unique_name UNIQUE (name),
 ADD CONSTRAINT unique_email UNIQUE (email);
 
-CREATE TABLE orders(
+CREATE TABLE orderEntities(
                        order_id BIGINT NOT NULL auto_increment,
                        user_id BIGINT NOT NULL,
                        order_detail VARCHAR(100) NOT NULL,
@@ -46,7 +46,7 @@ CREATE TABLE products (
 CREATE TABLE order_items (
                              order_id BIGINT NOT NULL,
                              product_id BIGINT NOT NULL,
-                             FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE CASCADE,
+                             FOREIGN KEY (order_id) REFERENCES orderEntities(order_id) ON DELETE CASCADE,
                              FOREIGN KEY (product_id) REFERENCES products(product_id) ON DELETE CASCADE
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -104,5 +104,5 @@ INSERT INTO products (name, price, quantity) VALUES ('상품14', 45400, 298);
 insert INTO users (name, email, password, phone_num, is_admin) values ('a', 'a@a.com', '1234', '12345678', false);
 insert INTO users (name, email, password, phone_num, is_admin) values ('b', 'b@a.com', '5678', '12345678', false);
 insert INTO users (name, email, password, phone_num, is_admin) values ('admin', 'admin@a.com', '1231234', '12345678', true);
-INSERT INTO orders (user_Id, order_detail, total_price, order_status) values (2, 'qwe', 200, 'PAY_REQUEST');
-INSERT INTO orders (user_Id, order_detail, total_price, order_status) values (3, 'zxczxc', 0, 'SHIPPING');
+INSERT INTO orderEntities (user_Id, order_detail, total_price, order_status) values (2, 'qwe', 200, 'PAY_REQUEST');
+INSERT INTO orderEntities (user_Id, order_detail, total_price, order_status) values (3, 'zxczxc', 0, 'SHIPPING');

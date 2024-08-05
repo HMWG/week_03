@@ -1,6 +1,6 @@
 package org.example.domain.order.repository;
 
-import org.example.domain.order.OrderItem;
+import org.example.domain.order.OrderItemEntity;
 import org.example.domain.order.service.OrderItemsRepository;
 
 import java.sql.*;
@@ -15,21 +15,21 @@ public class OrderItemsRepositoryImpl implements OrderItemsRepository {
 
 //    public static void main(String[] args) {
 //        OrderItemsRepositoryImpl orderItemsRepository = new OrderItemsRepositoryImpl();
-//        orderItemsRepository.save(new OrderItem(2, 2, 10));
-//        List<OrderItem> all = orderItemsRepository.findAll();
+//        orderItemsRepository.save(new OrderItemEntity(2, 2, 10));
+//        List<OrderItemEntity> all = orderItemsRepository.findAll();
 //        System.out.println(all);
 //
-//        List<OrderItem> byOrderId = orderItemsRepository.findByOrderId(2);
+//        List<OrderItemEntity> byOrderId = orderItemsRepository.findByOrderId(2);
 //        System.out.println(byOrderId);
 //
-//        List<OrderItem> byProductId = orderItemsRepository.findByProductId(2);
+//        List<OrderItemEntity> byProductId = orderItemsRepository.findByProductId(2);
 //        System.out.println(byOrderId);
 //
 //        int quantityByProductIdAndOrderId = orderItemsRepository.findQuantityByProductIdAndOrderId(2, 2);
 //        System.out.println(quantityByProductIdAndOrderId);
 //    }
     @Override
-    public int save(OrderItem orderItem) {
+    public int save(OrderItemEntity orderItemEntity) {
         Connection conn = null;
         PreparedStatement pstmt = null;
         int result;
@@ -37,9 +37,9 @@ public class OrderItemsRepositoryImpl implements OrderItemsRepository {
         try {
             conn = getConnection();
             pstmt = conn.prepareStatement(sql);
-            pstmt.setLong(1, orderItem.getOrder_id());
-            pstmt.setLong(2, orderItem.getProduct_id());
-            pstmt.setLong(3, orderItem.getQuantity());
+            pstmt.setLong(1, orderItemEntity.getOrder_id());
+            pstmt.setLong(2, orderItemEntity.getProduct_id());
+            pstmt.setLong(3, orderItemEntity.getQuantity());
             result = pstmt.executeUpdate();
 
         } catch (SQLException e) {
@@ -52,8 +52,8 @@ public class OrderItemsRepositoryImpl implements OrderItemsRepository {
     }
 
     @Override
-    public List<OrderItem> findAll() {
-        List<OrderItem> orderItems = new ArrayList<>();
+    public List<OrderItemEntity> findAll() {
+        List<OrderItemEntity> orderItemEntities = new ArrayList<>();
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -64,7 +64,7 @@ public class OrderItemsRepositoryImpl implements OrderItemsRepository {
             rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                orderItems.add(new OrderItem(
+                orderItemEntities.add(new OrderItemEntity(
                         rs.getLong("order_id"),
                         rs.getLong("product_id"),
                         rs.getInt("quantity")
@@ -77,12 +77,12 @@ public class OrderItemsRepositoryImpl implements OrderItemsRepository {
             close(pstmt, conn, rs);
         }
 
-        return orderItems;
+        return orderItemEntities;
     }
 
     @Override
-    public List<OrderItem> findByOrderId(long orderId) {
-        List<OrderItem> orderItems = new ArrayList<>();
+    public List<OrderItemEntity> findByOrderId(long orderId) {
+        List<OrderItemEntity> orderItemEntities = new ArrayList<>();
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -94,7 +94,7 @@ public class OrderItemsRepositoryImpl implements OrderItemsRepository {
             rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                orderItems.add(new OrderItem(
+                orderItemEntities.add(new OrderItemEntity(
                         rs.getLong("order_id"),
                         rs.getLong("product_id"),
                         rs.getInt("quantity")
@@ -107,12 +107,12 @@ public class OrderItemsRepositoryImpl implements OrderItemsRepository {
             close(pstmt, conn, rs);
         }
 
-        return orderItems;
+        return orderItemEntities;
     }
 
     @Override
-    public List<OrderItem> findByProductId(long product_id) {
-        List<OrderItem> orderItems = new ArrayList<>();
+    public List<OrderItemEntity> findByProductId(long product_id) {
+        List<OrderItemEntity> orderItemEntities = new ArrayList<>();
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -124,7 +124,7 @@ public class OrderItemsRepositoryImpl implements OrderItemsRepository {
             rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                orderItems.add(new OrderItem(
+                orderItemEntities.add(new OrderItemEntity(
                         rs.getLong("order_id"),
                         rs.getLong("product_id"),
                         rs.getInt("quantity")
@@ -137,7 +137,7 @@ public class OrderItemsRepositoryImpl implements OrderItemsRepository {
             close(rs, pstmt, conn);
         }
 
-        return orderItems;
+        return orderItemEntities;
     }
 
     @Override

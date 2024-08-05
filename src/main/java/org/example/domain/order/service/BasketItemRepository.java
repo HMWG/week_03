@@ -1,13 +1,13 @@
 package org.example.domain.order.service;
 
 import java.util.List;
-import org.example.domain.order.BasketItem;
+import org.example.domain.order.BasketItemEntity;
 
 public interface BasketItemRepository {
 
-    void save(BasketItem basketItem);
+    void save(BasketItemEntity basketItemEntity);
 
-    List<BasketItem> findByUserId(Long userId);
+    List<BasketItemEntity> findByUserId(Long userId);
 
     void increaseQuantity(Long userId, Long productId);
 

@@ -2,7 +2,7 @@ package org.example.domain.order;
 
 import java.time.LocalDateTime;
 
-public class Order {
+public class OrderEntity {
     private Long orderId;
 
     private Long userId;
@@ -15,7 +15,7 @@ public class Order {
 
     private LocalDateTime createdAt;
 
-    public Order(Long orderId, Long userId, String orderDetail, int totalPrice, OrderStatus orderStatus, LocalDateTime createdAt) {
+    public OrderEntity(Long orderId, Long userId, String orderDetail, int totalPrice, OrderStatus orderStatus, LocalDateTime createdAt) {
         this.orderId = orderId;
         this.userId = userId;
         this.orderDetail = orderDetail;
@@ -24,12 +24,28 @@ public class Order {
         this.createdAt = createdAt;
     }
 
-    public Order() {
+    private OrderEntity(Long userId, String orderDetail, int totalPrice, OrderStatus orderStatus) {
+        this.userId = userId;
+        this.orderDetail = orderDetail;
+        this.totalPrice = totalPrice;
+        this.orderStatus = orderStatus;
+    }
+
+    public static OrderEntity create(Long userId, String orderDetail, int totalPrice) {
+        return new OrderEntity(
+                userId,
+                orderDetail,
+                totalPrice,
+                OrderStatus.PAY_REQUEST
+        );
+    }
+
+    public OrderEntity() {
     }
 
     @Override
     public String toString() {
-        return "Order{" +
+        return "OrderEntity{" +
                 "orderId=" + orderId +
                 ", userId=" + userId +
                 ", orderDetail='" + orderDetail + '\'' +

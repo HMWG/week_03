@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import org.example.domain.order.BasketItem;
+import org.example.domain.order.BasketItemEntity;
 import org.example.domain.order.service.BasketItemRepository;
 import org.example.util.DBUtil;
 
@@ -17,14 +17,14 @@ public class BasketItemRepositoryImpl implements BasketItemRepository {
     private String query;
 
     @Override
-    public void save(BasketItem basketItem) {
+    public void save(BasketItemEntity basketItemEntity) {
         try {
             conn = DBUtil.getConnection();
             query = "INSERT INTO basket_items (user_id, product_id, quantity) VALUES (?, ?, ?)";
             psmt = conn.prepareStatement(query);
-            psmt.setLong(1, basketItem.userId());
-            psmt.setLong(2, basketItem.productId());
-            psmt.setInt(3, basketItem.quantity());
+            psmt.setLong(1, basketItemEntity.userId());
+            psmt.setLong(2, basketItemEntity.productId());
+            psmt.setInt(3, basketItemEntity.quantity());
             psmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -35,9 +35,9 @@ public class BasketItemRepositoryImpl implements BasketItemRepository {
     }
 
     @Override
-    public List<BasketItem> findByUserId(Long userId) {
+    public List<BasketItemEntity> findByUserId(Long userId) {
 
-        List<BasketItem> basketItems = new ArrayList<>();
+        List<BasketItemEntity> basketItemEntities = new ArrayList<>();
 
         try {
             conn = DBUtil.getConnection();
@@ -46,9 +46,9 @@ public class BasketItemRepositoryImpl implements BasketItemRepository {
             psmt.setLong(1, userId);
             ResultSet rs = psmt.executeQuery();
             while (rs.next()) {
-                BasketItem basketItem = BasketItem.of(rs.getLong("user_id"),
+                BasketItemEntity basketItemEntity = BasketItemEntity.of(rs.getLong("user_id"),
                         rs.getLong("product_id"), rs.getInt("quantity"));
-                basketItems.add(basketItem);
+                basketItemEntities.add(basketItemEntity);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -56,7 +56,7 @@ public class BasketItemRepositoryImpl implements BasketItemRepository {
         } finally {
             DBUtil.close(conn, psmt);
         }
-        return basketItems;
+        return basketItemEntities;
     }
 
     @Override

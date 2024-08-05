@@ -1,23 +1,22 @@
 package org.example.domain.order.service;
 
-import org.example.domain.order.Order;
-import org.example.domain.order.OrderStatus;
+import org.example.domain.order.OrderEntity;
 
 import java.util.List;
 
 public interface OrderRepository {
-    public int save(Long user_id, String order_detail, OrderStatus order_status);
+    public long save(OrderEntity orderEntity);
 
     public int delete(Long order_id);
 
-    public int update(Order order);
+    public int update(OrderEntity orderEntity);
 
-    public Order findByOrderId(Long order_id);
+    public OrderEntity findByOrderId(Long order_id);
 
-    public List<Order> findAll();
+    public List<OrderEntity> findAll();
 
     public int getTotalPriceByOrderId(Long order_id);
 
-    public List<Order> findByUserId(Long user_id);
+    public List<OrderEntity> findByUserId(Long user_id);
 
 }

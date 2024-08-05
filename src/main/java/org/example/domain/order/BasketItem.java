@@ -1,15 +1,12 @@
 package org.example.domain.order;
 
+import org.example.domain.product.Product;
+
 public record BasketItem(
-        Long userId,
-        Long productId,
-        Integer quantity
+        Product product,
+        int quantity
 ) {
-    public static BasketItem of(Long userId, Long productId, Integer quantity) {
-        return new BasketItem(
-                userId,
-                productId,
-                quantity
-        );
+    public static BasketItem of(Product product, int quantity) {
+        return new BasketItem(product, quantity);
     }
 }
