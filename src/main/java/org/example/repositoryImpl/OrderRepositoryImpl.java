@@ -1,17 +1,14 @@
-package org.example.service;
+package org.example.repositoryImpl;
 
 import org.example.domain.Order;
 import org.example.repository.OrderRepository;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.sql.*;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrderService implements OrderRepository {
+public class OrderRepositoryImpl implements OrderRepository {
 
     final String url = "jdbc:mysql://127.0.0.1:3306/shop";
     final String user = "root";
@@ -19,7 +16,7 @@ public class OrderService implements OrderRepository {
 
 
 
-    public OrderService() {
+    public OrderRepositoryImpl() {
     }
 
     @Override

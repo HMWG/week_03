@@ -1,6 +1,6 @@
 package org.example.repository;
 
-import org.example.User;
+import org.example.domain.User;
 
 import java.util.List;
 

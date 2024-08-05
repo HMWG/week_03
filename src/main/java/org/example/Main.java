@@ -7,13 +7,15 @@ import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.util.List;
 import org.example.domain.OrderItem;
+import org.example.domain.User;
 import org.example.jdbcTest.Product;
 import org.example.repository.OrderItemsRepository;
+import org.example.repository.OrderRepository;
 import org.example.repository.ProductRepository;
-import org.example.service.OrderItemsRepositoryImpl;
-import org.example.service.OrderService;
-import org.example.service.ProductRepositoryImpl;
-import org.example.service.UserRepositoryImpl;
+import org.example.repositoryImpl.OrderItemsRepositoryImpl;
+import org.example.repositoryImpl.OrderRepositoryImpl;
+import org.example.repositoryImpl.ProductRepositoryImpl;
+import org.example.repositoryImpl.UserRepositoryImpl;
 
 public class Main {
 
@@ -118,7 +120,7 @@ public class Main {
     }
 
     private static void executeOrderMenu(int orderMenu) {
-        OrderService orderService = new OrderService();
+        OrderRepository orderService = new OrderRepositoryImpl();
         OrderItemsRepository orderItemsRepository = new OrderItemsRepositoryImpl();
         try {
             switch (orderMenu) {
