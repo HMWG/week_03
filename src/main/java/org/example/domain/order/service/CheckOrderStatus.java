@@ -19,7 +19,7 @@ public class CheckOrderStatus {
         if (order == null) {
             return "해당 주문은 존재하지 않습니다.";
         }
-        return "주문 상태" + order.getOrderStatus().toString();
+        return "주문 상태 : " + order.getOrderStatus().toString();
     }
 
     /**
@@ -32,7 +32,7 @@ public class CheckOrderStatus {
         if (order == null) {
             return "해당 주문은 존재하지 않습니다.";
         }
-        return "주문 상세 정보" + order.getOrderDetail();
+        return "주문 상세 정보 : " + order.getOrderDetail();
     }
 
     /**
