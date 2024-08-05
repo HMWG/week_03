@@ -1,5 +1,6 @@
 package org.example.domain.order.service;
 
+import com.mysql.cj.x.protobuf.MysqlxCrud;
 import org.example.domain.order.OrderEntity;
 import org.example.domain.order.OrderStatus;
 import org.example.domain.order.repository.OrderRepositoryImpl;
@@ -21,6 +22,10 @@ public class RefundOrder {
      * @return 결제 완료 상태일 경우 true 리턴
      */
     public boolean checkPaymentCompletion(Long orderId){
+        OrderEntity order = orderRepository.findByOrderId(orderId);
+        if (order == null) {
+            return false;
+        }
         return orderRepository.findByOrderId(orderId).getOrderStatus().equals(OrderStatus.PAY_COMPLETE);
     }
 
@@ -32,6 +37,9 @@ public class RefundOrder {
      */
     public String refund(Long userId, Long orderId){
         OrderEntity order = orderRepository.findByOrderId(orderId);
+        if (order == null) {
+            return "해당 주문은 존재하지 않습니다.";
+        }
         if (userId.equals(order.getUserId())) {
             if(checkPaymentCompletion(orderId)){
                 OrderEntity updateOrder = new OrderEntity();

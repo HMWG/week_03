@@ -14,6 +14,9 @@ public class CancleOrder {
      */
     public boolean checkOrderStatus(Long orderId){
         OrderEntity order = orderRepository.findByOrderId(orderId);
+        if (order == null) {
+            return false;
+        }
         return order.getOrderStatus().equals(OrderStatus.PAY_REQUEST);
     }
 
@@ -25,6 +28,9 @@ public class CancleOrder {
      */
     public String cancleOrder(Long userId, Long orderId) {
         OrderEntity order = orderRepository.findByOrderId(orderId);
+        if (order == null) {
+            return "해당 주문은 존재하지 않습니다.";
+        }
         if (userId.equals(order.getUserId())) {
             if(checkOrderStatus(orderId)){
                 OrderEntity updateOrder = new OrderEntity();

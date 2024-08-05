@@ -16,6 +16,9 @@ public class CheckOrderStatus {
      */
     public String checkStatus(Long orderId) {
         OrderEntity order = orderRepository.findByOrderId(orderId);
+        if (order == null) {
+            return "해당 주문은 존재하지 않습니다.";
+        }
         return "주문 상태" + order.getOrderStatus().toString();
     }
 
@@ -26,6 +29,9 @@ public class CheckOrderStatus {
      */
     public String checkDetail(Long orderId) {
         OrderEntity order = orderRepository.findByOrderId(orderId);
+        if (order == null) {
+            return "해당 주문은 존재하지 않습니다.";
+        }
         return "주문 상세 정보" + order.getOrderDetail();
     }
 
@@ -36,6 +42,9 @@ public class CheckOrderStatus {
      */
     public String checkTotalPrice(Long orderId){
         OrderEntity order = orderRepository.findByOrderId(orderId);
+        if (order == null) {
+            return "해당 주문은 존재하지 않습니다.";
+        }
         return "주문 총 가격 : " + order.getTotalPrice();
     }
 
@@ -46,6 +55,9 @@ public class CheckOrderStatus {
      */
     public String checkCreatedAt(Long orderId){
         OrderEntity order = orderRepository.findByOrderId(orderId);
+        if (order == null) {
+            return "해당 주문은 존재하지 않습니다.";
+        }
         return "주문 생성일 : " + order.getCreatedAt().toString();
     }
 
@@ -68,5 +80,4 @@ public class CheckOrderStatus {
         }
         return list;
     }
-
 }

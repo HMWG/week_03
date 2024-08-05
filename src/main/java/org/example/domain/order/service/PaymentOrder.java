@@ -13,6 +13,10 @@ public class PaymentOrder {
      * @return 결제 요청 상태일 경우 true 리턴
      */
     public boolean checkPaymentRequest(Long orderId){
+        OrderEntity order = orderRepository.findByOrderId(orderId);
+        if (order == null) {
+            return false;
+        }
         return orderRepository.findByOrderId(orderId).getOrderStatus().equals(OrderStatus.PAY_REQUEST);
     }
 
@@ -24,6 +28,9 @@ public class PaymentOrder {
      */
     public String pay(Long userId, Long orderId){
         OrderEntity order = orderRepository.findByOrderId(orderId);
+        if (order == null) {
+            return "해당 주문은 존재하지 않습니다.";
+        }
         if (userId.equals(order.getUserId())) {
             if(checkPaymentRequest(orderId)){
                 OrderEntity updateOrder = new OrderEntity();
