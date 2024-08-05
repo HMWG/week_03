@@ -176,7 +176,7 @@ public class DeliveryAddressRepositoryImpl implements DeliveryAddressRepository 
 
     private DeliveryAddress getDeliveryAddress(ResultSet rs) throws SQLException {
         DeliveryAddress deliveryAddress = new DeliveryAddress();
-        deliveryAddress.setDelivery_address_id(rs.getLong(1));
+        deliveryAddress.setDeliveryAddressId(rs.getLong(1));
         deliveryAddress.setUserId(rs.getLong(2));
         deliveryAddress.setAddress(rs.getString(3));
         deliveryAddress.setIsConfigured(rs.getBoolean(4));

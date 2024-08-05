@@ -1,6 +1,6 @@
 package org.example.domain.product.service;
 
-import org.example.domain.order.Order;
+import org.example.domain.order.OrderEntity;
 import org.example.domain.order.OrderStatus;
 import org.example.domain.order.repository.OrderRepositoryImpl;
 import org.example.domain.order.service.OrderRepository;
@@ -26,13 +26,13 @@ public class ProductService {
         productRepository.deleteById(productId);
     }
 
-    public List<Order> getPayCompleteOrders() {
+    public List<OrderEntity> getPayCompleteOrders() {
         return orderRepository.findAll().stream()
                 .filter(o -> o.getOrderStatus().equals(OrderStatus.PAY_COMPLETE)).toList();
     }
 
-    public void acceptDelivery(List<Order> payCompleteOrders, Integer index) {
-        Order order = payCompleteOrders.get(index);
+    public void acceptDelivery(List<OrderEntity> payCompleteOrders, Integer index) {
+        OrderEntity order = payCompleteOrders.get(index);
         order.setOrderStatus(OrderStatus.SHIPPING);
         orderRepository.update(order);
     }
