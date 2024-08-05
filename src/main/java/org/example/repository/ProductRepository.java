@@ -2,7 +2,7 @@ package org.example.repository;
 
 import java.math.BigDecimal;
 import java.util.List;
-import org.example.jdbcTest.Product;
+import org.example.domain.Product;
 
 public interface ProductRepository {
 

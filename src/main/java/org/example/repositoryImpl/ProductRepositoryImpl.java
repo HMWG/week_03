@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import org.example.jdbcTest.Product;
+import org.example.domain.Product;
 import org.example.repository.ProductRepository;
 
 public class ProductRepositoryImpl implements ProductRepository {
