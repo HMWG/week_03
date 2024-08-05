@@ -7,6 +7,7 @@ import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class UserRepositoryImpl implements UserRepository {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/sharp";
@@ -56,48 +57,50 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public List<User> findByEmail(String email) {
+    public Optional<User> findByEmail(String email) {
+        Optional<User> user = Optional.empty();
         SQL = "select * from users where email = ?";
         try {
             conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
             ps = conn.prepareStatement(SQL);
             ps.setString(1, email);
             rs = ps.executeQuery();
-            List<User> users = new ArrayList<>();
-            while (rs.next()) {
-                users.add(addUser());
+            if (rs.next()) {
+                user = Optional.of(addUser());
             }
-            return users;
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
             closeConnection();
         }
+
+        return user;
     }
 
     @Override
-    public List<User> findByName(String name) {
+    public Optional<User> findByName(String name) {
+        Optional<User> user = Optional.empty();
         SQL = "select * from users where name = ?";
         try {
             conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
             ps = conn.prepareStatement(SQL);
             ps.setString(1, name);
             rs = ps.executeQuery();
-            List<User> users = new ArrayList<>();
-            while (rs.next()) {
-                users.add(addUser());
+            if (rs.next()) {
+                user = Optional.of(addUser());
             }
-            return users;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
             closeConnection();
         }
+        return user;
     }
 
     @Override
     public void update(User user) {
-        SQL = "update set name=?, email=?, phone_num=? where user_id=?";
+        SQL = "update users set name=?, email=?, phone_num=? where user_id=?";
         try {
             conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
             ps = conn.prepareStatement(SQL);

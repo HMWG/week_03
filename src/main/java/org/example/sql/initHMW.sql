@@ -19,13 +19,16 @@ CREATE TABLE users (
                        is_admin boolean NOT NULL,
                        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 )ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+ALTER TABLE users
+ADD CONSTRAINT unique_name UNIQUE (name),
+ADD CONSTRAINT unique_email UNIQUE (email);
 
 CREATE TABLE orders(
                        order_id BIGINT NOT NULL auto_increment,
                        user_id BIGINT NOT NULL,
                        order_detail VARCHAR(100) NOT NULL,
                        total_price INT NOT NULL,
-                       order_status ENUM('PAY_REQUEST', 'ORDER_CANCELED', 'PAY_COMPLETE', 'SHIPPING', 'SHIPPED', 'REFUNDR_EQUEST', 'REFUND_COMPLETED') NOT NULL,
+                       order_status ENUM('PAY_REQUEST', 'ORDER_CANCELED', 'PAY_COMPLETE', 'SHIPPING', 'SHIPPED', 'REFUND_REQUEST', 'REFUND_COMPLETED') NOT NULL,
                        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
                        PRIMARY KEY (order_id),
                        FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
