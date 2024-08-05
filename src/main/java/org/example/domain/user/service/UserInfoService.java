@@ -24,7 +24,7 @@ public class UserInfoService {
 
     public String getMyUserInfo(long userId) {
         Optional<User> user = userRepository.findById(userId);
-        return user.isPresent() ? user.toString() : "데이터베이스 오류";
+        return user.isPresent() ? user.get().toString() : "없는 회원입니다.";
     }
 
     /**
