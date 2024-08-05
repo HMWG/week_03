@@ -7,38 +7,45 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.example.repositoryImpl.DBUtil.close;
+import static org.example.repositoryImpl.DBUtil.getConnection;
+
 public class OrderItemsRepositoryImpl implements OrderItemsRepository {
 
+
+//    public static void main(String[] args) {
+//        OrderItemsRepositoryImpl orderItemsRepository = new OrderItemsRepositoryImpl();
+//        orderItemsRepository.save(new OrderItem(2, 2, 10));
+//        List<OrderItem> all = orderItemsRepository.findAll();
+//        System.out.println(all);
+//
+//        List<OrderItem> byOrderId = orderItemsRepository.findByOrderId(2);
+//        System.out.println(byOrderId);
+//
+//        List<OrderItem> byProductId = orderItemsRepository.findByProductId(2);
+//        System.out.println(byOrderId);
+//
+//        int quantityByProductIdAndOrderId = orderItemsRepository.findQuantityByProductIdAndOrderId(2, 2);
+//        System.out.println(quantityByProductIdAndOrderId);
+//    }
     @Override
     public int save(OrderItem orderItem) {
         Connection conn = null;
         PreparedStatement pstmt = null;
         int result;
-        String sql = "insert into order_items (order_id, product_id) values (?, ?)";
+        String sql = "insert into order_items (order_id, product_id, quantity) values (?, ?, ?)";
         try {
             conn = getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setLong(1, orderItem.getOrder_id());
             pstmt.setLong(2, orderItem.getProduct_id());
+            pstmt.setLong(3, orderItem.getQuantity());
             result = pstmt.executeUpdate();
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            if(pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if(conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-            }
+            close(pstmt, conn);
         }
 
         return result;
@@ -50,33 +57,24 @@ public class OrderItemsRepositoryImpl implements OrderItemsRepository {
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        String sql = "select order_id, product_id from order_items";
+        String sql = "select order_id, product_id, quantity from order_items";
         try {
             conn = getConnection();
             pstmt = conn.prepareStatement(sql);
             rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                orderItems.add(new OrderItem(rs.getLong("order_id"), rs.getLong("product_id")));
+                orderItems.add(new OrderItem(
+                        rs.getLong("order_id"),
+                        rs.getLong("product_id"),
+                        rs.getInt("quantity")
+                ));
             }
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            if(pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if(conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-            }
+            close(pstmt, conn, rs);
         }
 
         return orderItems;
@@ -88,7 +86,7 @@ public class OrderItemsRepositoryImpl implements OrderItemsRepository {
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        String sql = "select order_id, product_id from order_items where order_id = ?";
+        String sql = "select order_id, product_id, quantity from order_items where order_id = ?";
         try {
             conn = getConnection();
             pstmt = conn.prepareStatement(sql);
@@ -96,26 +94,17 @@ public class OrderItemsRepositoryImpl implements OrderItemsRepository {
             rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                orderItems.add(new OrderItem(rs.getLong("order_id"), rs.getLong("product_id")));
+                orderItems.add(new OrderItem(
+                        rs.getLong("order_id"),
+                        rs.getLong("product_id"),
+                        rs.getInt("quantity")
+                ));
             }
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            if(pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if(conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-            }
+            close(pstmt, conn, rs);
         }
 
         return orderItems;
@@ -127,7 +116,7 @@ public class OrderItemsRepositoryImpl implements OrderItemsRepository {
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        String sql = "select order_id, product_id from order_items where product_id = ?";
+        String sql = "select order_id, product_id, quantity from order_items where product_id = ?";
         try {
             conn = getConnection();
             pstmt = conn.prepareStatement(sql);
@@ -135,37 +124,46 @@ public class OrderItemsRepositoryImpl implements OrderItemsRepository {
             rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                orderItems.add(new OrderItem(rs.getLong("order_id"), rs.getLong("product_id")));
+                orderItems.add(new OrderItem(
+                        rs.getLong("order_id"),
+                        rs.getLong("product_id"),
+                        rs.getInt("quantity")
+                ));
             }
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            if(pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if(conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-            }
+            close(rs, pstmt, conn);
         }
 
         return orderItems;
     }
 
-
-    private Connection getConnection() throws SQLException {
+    @Override
+    public int findQuantityByProductIdAndOrderId(long product_id, long order_id) {
+        int quantity = 0;
         Connection conn = null;
-        String dbPassword = System.getenv("DB_PASSWORD");
-        conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/workshop", "root", dbPassword);
-//            conn = DriverManager.getConnection("jdbc:mysql://59.27.84.200:3306/workshop", "grepp", "grepp");
-        return conn;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        String sql = "select quantity from order_items where product_id = ? and order_id = ?";
+        try {
+            conn = getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setLong(1, product_id);
+            pstmt.setLong(2, order_id);
+            rs = pstmt.executeQuery();
+
+            if(rs.next()) {
+                quantity = rs.getInt("quantity");
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            close(rs, pstmt, conn);
+        }
+
+        return quantity;
     }
 }
