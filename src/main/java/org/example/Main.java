@@ -9,7 +9,6 @@ import java.util.List;
 import org.example.domain.OrderItem;
 import org.example.jdbcTest.Product;
 import org.example.repository.OrderItemsRepository;
-import org.example.repository.OrderRepository;
 import org.example.repository.ProductRepository;
 import org.example.service.OrderItemsRepositoryImpl;
 import org.example.service.OrderService;
