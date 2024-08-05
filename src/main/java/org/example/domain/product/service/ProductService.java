@@ -31,8 +31,10 @@ public class ProductService {
                 .filter(o -> o.getOrderStatus().equals(OrderStatus.PAY_COMPLETE)).toList();
     }
 
-    public void acceptDelivery(List<OrderEntity> payCompleteOrders, Integer index) {
-        OrderEntity order = payCompleteOrders.get(index);
+    public void acceptDelivery(Integer id) {
+        List<OrderEntity> payCompletedOrders = getPayCompleteOrders();
+        OrderEntity order = payCompletedOrders.stream().filter(o -> o.getOrderId().equals(id)).findFirst()
+                .orElseThrow(() -> new RuntimeException("Order not found"));
         order.setOrderStatus(OrderStatus.SHIPPING);
         orderRepository.update(order);
     }

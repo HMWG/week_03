@@ -2,14 +2,16 @@ package org.example.domain.delivery.service;
 
 import org.example.domain.delivery.Delivery;
 import org.example.domain.delivery.DeliveryAddress;
+import org.example.domain.delivery.repository.DeliveryAddressRepositoryImpl;
+import org.example.domain.delivery.repository.DeliveryRepositoryImpl;
 
 public class DeliveryService {
     private final DeliveryRepository deliveryRepository;
     private final DeliveryAddressRepository deliveryAddressRepository;
 
-    public DeliveryService(DeliveryRepository deliveryRepository, DeliveryAddressRepository deliveryAddressRepository) {
-        this.deliveryRepository = deliveryRepository;
-        this.deliveryAddressRepository = deliveryAddressRepository;
+    public DeliveryService() {
+        this.deliveryRepository = new DeliveryRepositoryImpl();
+        this.deliveryAddressRepository = new DeliveryAddressRepositoryImpl();
     }
 
     public String findAddressByOrderId(Long deliveryId) {
