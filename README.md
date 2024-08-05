@@ -66,14 +66,4 @@
 
 # 💻 실행 화면
 
-## 회원관련기능
-
-[회원관련 기능 캡처화면](https://www.notion.so/f4215819227149e3a65b8d512bf3481b?pvs=21)
-
-## 관리자 기능(상품 추가 및 삭제, 배송 상태 변경)
-
-[관리자 기능 캡처화면](https://www.notion.so/717aec79ba814c3d835873ee7e351caf?pvs=21)
-
-## 주문 정보 및 취소 정보
-
-[주문 정보 및 취소 정보 캡처화면](https://www.notion.so/d52127923add43999f524670f55c5be0?pvs=21)
+[캡처화면](https://rounded-palm-33d.notion.site/9d6ddb845f7b4f0b93df949c98b9d577?pvs=4)
