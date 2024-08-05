@@ -12,4 +12,5 @@ public interface UserRepository {
     Optional<User> findByName(String name);
     void update(User user);
     void deleteById(Long id);
+    Optional<User> findById(Long id);
 }

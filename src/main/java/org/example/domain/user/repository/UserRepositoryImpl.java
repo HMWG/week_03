@@ -1,7 +1,9 @@
 package org.example.domain.user.repository;
 
 import org.example.domain.user.User;
+import org.example.domain.user.exception.EmailNameDuplicationException;
 import org.example.domain.user.service.UserRepository;
+import org.example.util.DBUtil;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -10,9 +12,6 @@ import java.util.List;
 import java.util.Optional;
 
 public class UserRepositoryImpl implements UserRepository {
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/sharp";
-    private static final String DB_USER = "root";
-    private static final String DB_PASSWORD = "1234";
     private Connection conn = null;
     private PreparedStatement ps = null;
     private String SQL = null;
@@ -20,20 +19,23 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public void save(User user) {
-        SQL = "insert into users(name, email, password, phone_num) values (?, ?, ?, ?)";
+        SQL = "insert into users(name, email, password, phone_num, is_admin) values (?, ?, ?, ?, ?)";
         try {
-            conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+            conn = DBUtil.getConnection();
             ps = conn.prepareStatement(SQL);
             ps.setString(1, user.getName());
             ps.setString(2, user.getEmail());
             ps.setString(3, user.getPassword());
             ps.setString(4, user.getPhoneNumber());
+            ps.setBoolean(5, user.getIsAdmin());
             int res = ps.executeUpdate();
             System.out.println(res + " 회원 추가 완료");
+        } catch (SQLIntegrityConstraintViolationException e) {
+            throw new EmailNameDuplicationException();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            closeConnection();
+            DBUtil.close(conn, ps, rs);
         }
     }
 
@@ -41,7 +43,7 @@ public class UserRepositoryImpl implements UserRepository {
     public List<User> findAll() {
         SQL = "select * from users";
         try {
-            conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+            conn = DBUtil.getConnection();
             ps = conn.prepareStatement(SQL);
             rs = ps.executeQuery();
             List<User> users = new ArrayList<>();
@@ -52,8 +54,30 @@ public class UserRepositoryImpl implements UserRepository {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            closeConnection();
+            DBUtil.close(conn, ps, rs);
         }
+    }
+
+    @Override
+    public Optional<User> findById(Long id) {
+        Optional<User> user = Optional.empty();
+        SQL = "select * from users where user_id = ?";
+        try {
+            conn = DBUtil.getConnection();
+            ps = conn.prepareStatement(SQL);
+            ps.setLong(1, id);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                user = Optional.of(addUser());
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            DBUtil.close(conn, ps, rs);
+        }
+
+        return user;
     }
 
     @Override
@@ -61,7 +85,7 @@ public class UserRepositoryImpl implements UserRepository {
         Optional<User> user = Optional.empty();
         SQL = "select * from users where email = ?";
         try {
-            conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+            conn = DBUtil.getConnection();
             ps = conn.prepareStatement(SQL);
             ps.setString(1, email);
             rs = ps.executeQuery();
@@ -72,7 +96,7 @@ public class UserRepositoryImpl implements UserRepository {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            closeConnection();
+            DBUtil.close(conn, ps, rs);
         }
 
         return user;
@@ -83,7 +107,7 @@ public class UserRepositoryImpl implements UserRepository {
         Optional<User> user = Optional.empty();
         SQL = "select * from users where name = ?";
         try {
-            conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+            conn = DBUtil.getConnection();
             ps = conn.prepareStatement(SQL);
             ps.setString(1, name);
             rs = ps.executeQuery();
@@ -93,7 +117,7 @@ public class UserRepositoryImpl implements UserRepository {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            closeConnection();
+            DBUtil.close(conn, ps, rs);
         }
         return user;
     }
@@ -102,7 +126,7 @@ public class UserRepositoryImpl implements UserRepository {
     public void update(User user) {
         SQL = "update users set name=?, email=?, phone_num=? where user_id=?";
         try {
-            conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+            conn = DBUtil.getConnection();
             ps = conn.prepareStatement(SQL);
             ps.setString(1, user.getName());
             ps.setString(2, user.getEmail());
@@ -113,7 +137,7 @@ public class UserRepositoryImpl implements UserRepository {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            closeConnection();
+            DBUtil.close(conn, ps, rs);
         }
     }
 
@@ -121,7 +145,7 @@ public class UserRepositoryImpl implements UserRepository {
     public void deleteById(Long id) {
         SQL = "delete from users where user_id=?";
         try {
-            conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+            conn = DBUtil.getConnection();
             ps = conn.prepareStatement(SQL);
             ps.setLong(1, id);
             int res = ps.executeUpdate();
@@ -129,7 +153,7 @@ public class UserRepositoryImpl implements UserRepository {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            closeConnection();
+            DBUtil.close(conn, ps, rs);
         }
     }
 
@@ -139,35 +163,9 @@ public class UserRepositoryImpl implements UserRepository {
         String email = rs.getString("email");
         String password = rs.getString("password");
         String phoneNum = rs.getString("phone_num");
+        boolean isAdmin = rs.getBoolean("is_admin");
         LocalDateTime createdAt = rs.getObject("created_at", LocalDateTime.class);
 
-        return new User(id, name, email, password, phoneNum, createdAt);
-    }
-
-    private void closeConnection() {
-        if (conn != null) {
-            try {
-                conn.close();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-        if (ps != null) {
-            try {
-                ps.close();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-
-        }
-
-        if (rs != null) {
-            try {
-                rs.close();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
+        return new User(id, name, email, password, phoneNum, isAdmin, createdAt);
     }
 }

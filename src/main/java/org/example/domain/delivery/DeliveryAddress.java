@@ -33,7 +33,7 @@ public class DeliveryAddress {
         this.coordinate = coordinate;
     }
 
-    public void setDelivery_address_id(long deliveryAddressId) {
+    public void setDeliveryAddressId(long deliveryAddressId) {
         this.deliveryAddressId = deliveryAddressId;
     }
 
