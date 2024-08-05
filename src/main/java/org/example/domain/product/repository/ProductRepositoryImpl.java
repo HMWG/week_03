@@ -233,14 +233,14 @@ public class ProductRepositoryImpl implements ProductRepository {
   }
 
   @Override
-  public void decreaseQuantity(Long productId, Integer quantity) {
+  public void decreaseQuantity(Product product, Integer quantity) {
     conn = connectDb();
     query = "UPDATE products SET quantity = quantity - ? WHERE product_id = ?";
 
     try {
       psmt = conn.prepareStatement(query);
       psmt.setInt(1, quantity);
-      psmt.setLong(2, productId);
+      psmt.setLong(2, product.productId());
       psmt.executeUpdate();
     } catch (SQLException e) {
       e.printStackTrace();
