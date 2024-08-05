@@ -1,6 +1,7 @@
 package org.example.domain.order;
 
 public class OrderItemEntity {
+
     private long order_id;
     private long product_id;
     private int quantity;
@@ -12,7 +13,8 @@ public class OrderItemEntity {
     }
 
     public static OrderItemEntity create(long order_id, BasketItem basketItem) {
-        return new OrderItemEntity(order_id, basketItem.product().productId(), basketItem.quantity());
+        return new OrderItemEntity(order_id, basketItem.product().productId(),
+                basketItem.quantity());
     }
 
     public long getOrder_id() {
@@ -25,5 +27,14 @@ public class OrderItemEntity {
 
     public int getQuantity() {
         return quantity;
+    }
+
+    @Override
+    public String toString() {
+        return "OrderItemEntity{" +
+                "order_id=" + order_id +
+                ", product_id=" + product_id +
+                ", quantity=" + quantity +
+                '}';
     }
 }
